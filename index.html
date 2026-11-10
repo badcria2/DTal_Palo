@@ -17,12 +17,12 @@
     }
     *{box-sizing:border-box}
     html{scroll-behavior:smooth}
-    body{margin:0;background:var(--cream);color:var(--ink);font-family:"DM Sans",sans-serif;position:relative}
+    body{margin:0;background:var(--cream);color:var(--ink);font-family:"DM Sans",sans-serif;position:relative;overflow-x:hidden}
     a{color:inherit;text-decoration:none}
     .wrap{width:min(1160px,calc(100% - 42px));margin:auto;position:relative;z-index:2}
     .topline{height:7px;background:linear-gradient(90deg,var(--rose),var(--butter),var(--sage));position:relative;z-index:2}
     
-    /* Canvas Nieve Suave */
+    /* Canvas Nieve Suave y Mágica */
     #snow-canvas {
       position: fixed;
       top: 0;
@@ -31,13 +31,33 @@
       height: 100%;
       pointer-events: none;
       z-index: 1;
+      will-change: transform;
+      transform: translateZ(0);
     }
 
     header{display:flex;justify-content:space-between;align-items:center;padding:24px 0;border-bottom:1px solid var(--line)}
-    .brand{display:flex;align-items:center;gap:12px}
-    .brand-mark{width:48px;height:48px;border-radius:50%;background:var(--rose);display:grid;place-items:center;color:#fffaf1;font-family:"Playfair Display",serif;font-size:23px;font-weight:700;box-shadow:inset 0 0 0 1px #ffffff66}
-    .brand-name{font-family:"Playfair Display",serif;font-size:24px;font-weight:700;letter-spacing:-.5px}
-    .brand-sub{display:block;font-size:9px;letter-spacing:2.6px;text-transform:uppercase;color:var(--muted);margin-top:2px}
+    
+    /* Identidad visual con adorno navideño en logo */
+    .brand{display:flex;align-items:center;gap:10px;position:relative}
+    .brand-logo-container{position:relative;display:inline-block}
+    .santa-hat{
+      position:absolute;
+      top:-12px;
+      left:-8px;
+      width:32px;
+      height:32px;
+      z-index:3;
+      transform:rotate(-15deg);
+      transition:transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      pointer-events:none;
+    }
+    .brand:hover .santa-hat{
+      transform:rotate(-5deg) scale(1.1) translateY(-2px);
+    }
+    .brand-logo{display:block;width:112px;height:76px;object-fit:contain;transition:transform .4s ease,filter .4s ease}
+    .brand:hover .brand-logo{transform:translateY(-2px) rotate(-1deg);filter:drop-shadow(0 5px 8px #49392f22)}
+    .brand-sub{font-size:9px;letter-spacing:2px;display:block;color:var(--muted);margin-top:2px;text-transform:uppercase}
+    
     nav{display:flex;gap:26px;font-size:13px;color:#76665a}
     nav a{transition:color 0.4s ease}
     nav a:hover{color:#a66e65}
@@ -48,32 +68,55 @@
     .hero-copy{font-size:16px;line-height:1.8;color:var(--muted);max-width:470px}
     .hero-actions{display:flex;align-items:center;gap:17px;margin-top:30px;flex-wrap:wrap}
     
-    /* Botones con transición cálida y pausada */
-    .btn{display:inline-flex;align-items:center;gap:10px;background:var(--ink);color:#fffaf1;padding:14px 20px;border-radius:3px;font-size:12px;font-weight:700;letter-spacing:.5px;transition:background-color 0.4s ease, transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s ease;border:none;cursor:pointer}
+    .btn{display:inline-flex;align-items:center;gap:10px;background:var(--ink);color:#fffaf1;padding:14px 20px;border-radius:3px;font-size:12px;font-weight:700;letter-spacing:.5px;transition:background-color 0.4s ease, transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s ease;border:none;cursor:pointer;position:relative;overflow:hidden;isolation:isolate}
+    .btn:after{content:"";position:absolute;inset:0;transform:translateX(-120%);background:linear-gradient(110deg,transparent,#ffffff38,transparent);transition:transform 0.8s ease;z-index:-1}
+    .btn:hover:after{transform:translateX(120%)}
     .btn:hover{background:#806054;transform:translateY(-3px);box-shadow:0 8px 20px rgba(73, 57, 47, 0.15)}
     .text-link{font-size:12px;color:#8c6b5e;border-bottom:1px solid #c9a79b;padding-bottom:4px;transition:color 0.3s ease, border-color 0.3s ease}
     .text-link:hover{color:var(--ink);border-color:var(--ink)}
     
-    .hero-photos{height:440px;position:relative}
-    .photo-main{position:absolute;right:7%;top:0;width:67%;height:88%;object-fit:cover;border-radius:48% 48% 3px 3px;box-shadow:var(--shadow)}
-    .photo-small{position:absolute;left:0;bottom:0;width:43%;height:48%;object-fit:cover;border:9px solid var(--cream);box-shadow:var(--shadow)}
-    .round-note{position:absolute;right:0;bottom:7%;width:106px;height:106px;border-radius:50%;background:var(--butter);display:grid;place-items:center;text-align:center;font-family:"Playfair Display",serif;font-size:15px;line-height:1.2;transform:rotate(9deg);padding:14px}
+    .hero-photos{height:440px;position:relative;perspective:1000px}
+    .photo-main{position:absolute;right:7%;top:0;width:67%;height:88%;object-fit:cover;border-radius:48% 48% 3px 3px;box-shadow:var(--shadow);transition:transform 0.8s cubic-bezier(0.16, 1, 0.3, 1), filter 0.5s ease}
+    .photo-small{position:absolute;left:0;bottom:0;width:43%;height:48%;object-fit:cover;border:9px solid var(--cream);box-shadow:var(--shadow);transition:transform 0.8s cubic-bezier(0.16, 1, 0.3, 1), filter 0.5s ease}
+    .hero-photos:hover .photo-main{transform:scale(1.025) rotate(1deg);filter:saturate(1.08)}
+    .hero-photos:hover .photo-small{transform:translateY(-5px) rotate(-1deg)}
+    .round-note{position:absolute;right:0;bottom:7%;width:106px;height:106px;border-radius:50%;background:var(--butter);display:grid;place-items:center;text-align:center;font-family:"Playfair Display",serif;font-size:15px;line-height:1.2;transform:rotate(9deg);padding:14px;box-shadow:0 12px 28px #604a3220;animation:float-note 5s ease-in-out infinite;will-change:transform}
+    
     .section{padding:48px 0 76px}
     .section-heading{text-align:center;margin-bottom:30px}
     .section-heading .eyebrow{color:#9b7965}
     h2{font-family:"Playfair Display",serif;font-size:clamp(30px,4vw,42px);font-weight:600;margin:10px 0}
     .section-heading p{font-size:14px;color:var(--muted);margin:0}
+    .photo-note{font-size:11px!important;color:#9a897b!important;margin-top:9px!important;font-style:italic}
     .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
     
-    /* Tarjetas de catálogo con animación cálida */
-    .catalog-card{background:var(--paper);border:1px solid var(--line);padding:10px;box-shadow:0 8px 25px #604a3209;transition:transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s cubic-bezier(0.16, 1, 0.3, 1);cursor:pointer;position:relative}
-    .catalog-card:hover{transform:translateY(-6px);box-shadow:0 16px 35px rgba(96, 74, 50, 0.12)}
+    .catalog-card{background:var(--paper);border:1px solid var(--line);padding:10px;box-shadow:0 8px 25px #604a3209;transition:transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.4s ease;cursor:pointer;position:relative;will-change:transform}
+    .catalog-card:hover{transform:translateY(-6px);box-shadow:0 16px 35px rgba(96, 74, 50, 0.14);border-color:#d4b3a7}
     .card-image{height:280px;position:relative;overflow:hidden;background:#e5d9c9}
     .card-image img{width:100%;height:100%;object-fit:cover;display:block;transition:transform 0.6s cubic-bezier(0.16, 1, 0.3, 1)}
+    .card-image:after{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(180deg,transparent 65%,#24180f12)}
     .catalog-card:hover .card-image img{transform:scale(1.04)}
-    .ribbon{position:absolute;left:13px;top:13px;background:#fffaf0eF;color:#73594c;padding:7px 10px;font-size:9px;letter-spacing:1.5px;text-transform:uppercase;z-index:1}
     
-    .promo-badge{position:absolute;right:13px;top:13px;background:#b77e73;color:#fff;padding:6px 9px;font-size:9px;font-weight:700;letter-spacing:1px;text-transform:uppercase;border-radius:2px;z-index:1}
+    .card-image::before {
+      content: "";
+      position: absolute;
+      top: -100%;
+      left: -100%;
+      width: 300%;
+      height: 300%;
+      background: radial-gradient(circle, rgba(255,255,255,0.3) 0%, transparent 60%);
+      opacity: 0;
+      transition: opacity 0.5s ease;
+      pointer-events: none;
+      z-index: 2;
+    }
+    .catalog-card:hover .card-image::before {
+      opacity: 1;
+      animation: cardSparkle 1.5s ease infinite;
+    }
+
+    .ribbon{position:absolute;left:13px;top:13px;background:#fffaf0eF;color:#73594c;padding:7px 10px;font-size:9px;letter-spacing:1.5px;text-transform:uppercase;z-index:1}
+    .promo-badge{position:absolute;right:13px;top:13px;background:#b77e73;color:#fff;padding:6px 9px;font-size:9px;font-weight:700;letter-spacing:1px;text-transform:uppercase;border-radius:2px;z-index:1;animation:festiveGlow 2.5s ease-in-out infinite alternate}
 
     .card-info{padding:17px 12px 13px}
     .card-info h3{font-family:"Playfair Display",serif;font-size:23px;font-weight:600;margin:0 0 7px}
@@ -83,59 +126,66 @@
     .status{font-size:10px;color:#948477}
     .coming{opacity:.88}
     .custom{background:#e9e3d5;padding:42px 24px;text-align:center;margin:0 0 75px;position:relative;overflow:hidden}
-    .custom:before,.custom:after{content:"✳";position:absolute;font-size:90px;color:#c8b8a0;opacity:.35}
-    .custom:before{left:4%;top:-20px}.custom:after{right:4%;bottom:-30px}
+    
+    .custom:before,.custom:after{content:"✳";position:absolute;font-size:90px;color:#c8b8a0;opacity:.35;animation:starRotate 14s linear infinite}
+    .custom:before{left:4%;top:-20px}.custom:after{right:4%;bottom:-30px;animation-direction:reverse}
     .custom h2{font-size:34px;margin:0 0 10px}
     .custom p{color:#827365;font-size:13px;line-height:1.7;max-width:500px;margin:0 auto 20px}
     .custom .btn{background:#a97970}
     .custom .btn:hover{background:#8c5d55}
     footer{border-top:1px solid var(--line);padding:24px 0 30px;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;color:#998a7d;font-size:11px;letter-spacing:.3px}
 
-    /* Identidad visual y microinteracciones suaves */
-    .brand{gap:10px;align-items:center}
-    .brand-logo{display:block;width:112px;height:76px;object-fit:contain;transition:transform .4s ease,filter .4s ease}
-    .brand:hover .brand-logo{transform:translateY(-2px) rotate(-1deg);filter:drop-shadow(0 5px 8px #49392f22)}
-    .brand-sub{font-size:9px;letter-spacing:2px}
-    .photo-note{font-size:11px!important;color:#9a897b!important;margin-top:9px!important;font-style:italic}
-    
-    .btn{position:relative;overflow:hidden;isolation:isolate}
-    .btn:after{content:"";position:absolute;inset:0;transform:translateX(-120%);background:linear-gradient(110deg,transparent,#ffffff38,transparent);transition:transform 0.8s ease;z-index:-1}
-    .btn:hover:after{transform:translateX(120%)}
-    
-    .photo-main,.photo-small{transition:transform 0.8s cubic-bezier(0.16, 1, 0.3, 1), filter 0.5s ease}
-    .hero-photos:hover .photo-main{transform:scale(1.025) rotate(1deg);filter:saturate(1.08)}
-    .hero-photos:hover .photo-small{transform:translateY(-5px) rotate(-1deg)}
-    .round-note{box-shadow:0 12px 28px #604a3220;animation:float-note 5s ease-in-out infinite}
-    .catalog-card{will-change:transform}
-    .card-image:after{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(180deg,transparent 65%,#24180f12)}
-    
-    .whatsapp-float{position:fixed;right:24px;bottom:22px;z-index:20;width:60px;height:60px;border-radius:50%;display:grid;place-items:center;background:#20b95a;color:white;box-shadow:0 8px 24px #164d2d40;transition:transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s ease}
+    /* Botón Flotante WhatsApp */
+    .whatsapp-float{position:fixed;right:24px;bottom:22px;z-index:20;width:60px;height:60px;border-radius:50%;display:grid;place-items:center;background:#20b95a;color:white;box-shadow:0 8px 24px #164d2d40;transition:transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s ease;animation:waPulse 3s infinite}
     .whatsapp-float:hover{transform:translateY(-4px) scale(1.04);box-shadow:0 12px 30px #164d2d55}
     .whatsapp-float svg{width:30px;height:30px;fill:currentColor}
     .whatsapp-float span{position:absolute;right:72px;white-space:nowrap;background:#fffaf1;color:var(--ink);padding:9px 12px;border-radius:5px;font-size:11px;box-shadow:var(--shadow);opacity:0;transform:translateX(6px);transition:opacity 0.3s ease, transform 0.3s ease;pointer-events:none}
     .whatsapp-float:hover span{opacity:1;transform:translateX(0)}
     
-    /* Animación de scroll cálida y fluida */
+    /* Revelación en scroll */
     .reveal{opacity:0;transform:translateY(24px);transition:opacity 0.9s cubic-bezier(0.16, 1, 0.3, 1), transform 0.9s cubic-bezier(0.16, 1, 0.3, 1)}
     .reveal.visible{opacity:1;transform:translateY(0)}
 
+    /* Sparkles dinámicos generados por JS */
+    .js-sparkle {
+      position: fixed;
+      pointer-events: none;
+      font-size: 14px;
+      z-index: 9999;
+      animation: sparkleFade 0.8s ease-out forwards;
+      user-select: none;
+    }
+
+    /* Keyframes */
     @keyframes float-note{0%,100%{transform:translateY(0) rotate(9deg)}50%{transform:translateY(-7px) rotate(6deg)}}
-    
-    @media(max-width:560px){.brand-logo{width:90px;height:62px}.brand{gap:7px}.brand-sub{font-size:8px;letter-spacing:1.5px}.whatsapp-float{right:16px;bottom:16px;width:54px;height:54px}.whatsapp-float span{display:none}}
+    @keyframes festiveGlow { 0% { box-shadow: 0 0 0 rgba(183, 126, 115, 0); } 50% { box-shadow: 0 0 12px rgba(183, 126, 115, 0.6); } 100% { box-shadow: 0 0 0 rgba(183, 126, 115, 0); } }
+    @keyframes starRotate { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+    @keyframes cardSparkle { 0% { transform: translate(-30%, -30%) rotate(0deg); } 100% { transform: translate(30%, 30%) rotate(45deg); } }
+    @keyframes waPulse { 0% { box-shadow: 0 0 0 0 rgba(32, 185, 90, 0.5); } 70% { box-shadow: 0 0 0 15px rgba(32, 185, 90, 0); } 100% { box-shadow: 0 0 0 0 rgba(32, 185, 90, 0); } }
+    @keyframes sparkleFade { 0% { opacity: 1; transform: scale(0.3) rotate(0deg); } 50% { opacity: 0.8; transform: scale(1.2) translateY(-10px) rotate(90deg); } 100% { opacity: 0; transform: scale(0) translateY(-20px) rotate(180deg); } }
+
+    @media(max-width:560px){.brand-logo{width:90px;height:62px}.brand-sub{font-size:8px;letter-spacing:1.5px}.whatsapp-float{right:16px;bottom:16px;width:54px;height:54px}.whatsapp-float span{display:none}}
     @media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;animation:none!important;transition:none!important}.reveal{opacity:1;transform:none}#snow-canvas{display:none}}
     @media(max-width:800px){.hero{grid-template-columns:1fr;gap:30px;padding:48px 0 58px}.hero-photos{height:390px;max-width:570px;width:100%;margin:auto}.grid{grid-template-columns:repeat(2,1fr)}nav{gap:14px}}
     @media(max-width:560px){.wrap{width:min(100% - 28px,1160px)}header{padding:17px 0}.brand-name{font-size:21px}nav{display:none}.hero{padding-top:42px}h1{font-size:48px}.hero-copy{font-size:14px}.hero-photos{height:330px}.photo-main{width:70%;height:88%}.photo-small{width:44%;height:47%;border-width:7px}.round-note{width:82px;height:82px;font-size:12px}.grid{grid-template-columns:1fr;gap:15px}.card-image{height:310px}.section{padding:34px 0 55px}.custom{padding:34px 18px;margin-bottom:52px}.custom:before,.custom:after{font-size:60px}}
   </style>
 </head>
 <body>
-  <!-- Canvas Animación de Nieve Discreta -->
   <canvas id="snow-canvas"></canvas>
 
   <div class="topline"></div>
   <div class="wrap">
     <header>
       <a class="brand" href="#" aria-label="De tal palo, inicio">
-        <img class="brand-logo" src="logo.png" alt="Logotipo De tal palo">
+        <div class="brand-logo-container">
+          <!-- Gorro Navideño Animado SVG -->
+          <svg class="santa-hat" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M20 70 C 25 35, 60 15, 80 40 C 65 30, 35 45, 25 70 Z" fill="#c0392b"/>
+            <path d="M15 70 C 15 65, 85 65, 85 70 C 85 76, 15 76, 15 70 Z" fill="#ffffff" rx="5"/>
+            <circle cx="82" cy="42" r="7" fill="#ffffff"/>
+          </svg>
+          <img class="brand-logo" src="logo.png" alt="Logotipo De tal palo" onerror="this.src='https://placehold.co/112x76/d9aaa0/ffffff?text=De+tal+palo'">
+        </div>
         <span class="brand-sub">polos · ideas · estilo</span> 
       </a>
       <nav><a href="#catalogos">Catálogos</a><a href="#personalizados">Personalizados</a></nav>
@@ -152,7 +202,7 @@
             <a class="text-link" href="#personalizados">Quiero un diseño propio</a>
           </div>
         </div>
-        <div class="hero-photos reveal" aria-label="Fotografías de inspiración de moda">
+        <div class="hero-photos reveal" id="hero-photos-wrap" aria-label="Fotografías de inspiración de moda">
           <img class="photo-main" src="https://images.unsplash.com/photo-1529139574466-a303027c1d8b?auto=format&fit=crop&w=1000&q=85" alt="Fotografía editorial de moda urbana">
           <img loading="lazy" class="photo-small" src="https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?auto=format&fit=crop&w=700&q=85" alt="Polo de algodón en fotografía de producto">
           <div class="round-note">hecho para<br>ser tú ✳</div>
@@ -216,7 +266,6 @@
     <footer><span>© <span id="year"></span> De tal palo</span><span>Hecho con cariño y un poquito de nostalgia ✳</span></footer>
   </div>
 
-  <!-- Botón Flotante WhatsApp -->
   <a class="whatsapp-float" href="https://wa.me/51991585760?text=Hola%2C%20vi%20la%20p%C3%A1gina%20de%20De%20tal%20palo%20y%20quisiera%20informaci%C3%B3n%20sobre%20sus%20polos." target="_blank" rel="noopener noreferrer" aria-label="Escríbenos por WhatsApp">
     <span>¡Hablemos por WhatsApp!</span>
     <svg viewBox="0 0 32 32" aria-hidden="true"><path d="M16.02 3C8.85 3 3.02 8.77 3.02 15.87c0 2.27.6 4.49 1.75 6.44L3 29l6.9-1.8a13.1 13.1 0 0 0 6.12 1.51h.01c7.17 0 13-5.78 13-12.88 0-3.44-1.35-6.67-3.8-9.1A13 13 0 0 0 16.02 3zm0 23.53h-.01a10.8 10.8 0 0 1-5.48-1.49l-.39-.23-4.1 1.07 1.1-3.98-.25-.4a10.55 10.55 0 0 1-1.63-5.63c0-5.9 4.84-10.7 10.78-10.7 2.88 0 5.59 1.11 7.62 3.13a10.57 10.57 0 0 1 3.16 7.57c0 5.9-4.84 10.7-10.8 10.7zm5.91-8.02c-.32-.16-1.9-.93-2.2-1.03-.3-.1-.51-.16-.73.16-.22.32-.84 1.03-1.03 1.24-.19.21-.38.24-.7.08-.32-.16-1.35-.49-2.57-1.56-.95-.83-1.59-1.85-1.78-2.17-.19-.32-.02-.49.14-.65.14-.14.32-.38.48-.56.16-.19.21-.32.32-.54.1-.21.05-.4-.03-.56-.08-.16-.73-1.73-1-2.37-.26-.62-.53-.54-.73-.55h-.62c-.22 0-.57.08-.86.4-.3.32-1.13 1.1-1.13 2.67s1.16 3.09 1.32 3.3c.16.21 2.28 3.45 5.52 4.84.77.33 1.37.53 1.84.68.77.24 1.47.21 2.02.13.62-.09 1.9-.77 2.17-1.51.27-.75.27-1.39.19-1.52-.08-.14-.29-.22-.62-.38z"/></svg>
@@ -233,65 +282,129 @@
       document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
     }
 
-    /* --- Animación de Nieve Orgánica y Calmada --- */
-    const canvas = document.getElementById('snow-canvas');
-    const ctx = canvas.getContext('2d');
+    /* --- Animación Parallax Suave con el Mouse en Hero --- */
+    const heroWrap = document.getElementById('hero-photos-wrap');
+    if (heroWrap && window.innerWidth > 800) {
+      const mainPic = heroWrap.querySelector('.photo-main');
+      const smallPic = heroWrap.querySelector('.photo-small');
+      
+      heroWrap.addEventListener('mousemove', (e) => {
+        const rect = heroWrap.getBoundingClientRect();
+        const x = e.clientX - rect.left - rect.width / 2;
+        const y = e.clientY - rect.top - rect.height / 2;
+        
+        mainPic.style.transform = `translate3d(${x * 0.03}px, ${y * 0.03}px, 0) scale(1.025)`;
+        smallPic.style.transform = `translate3d(${x * -0.05}px, ${y * -0.05}px, 0)`;
+      });
+      
+      heroWrap.addEventListener('mouseleave', () => {
+        mainPic.style.transform = '';
+        smallPic.style.transform = '';
+      });
+    }
 
-    let width = canvas.width = window.innerWidth;
-    let height = canvas.height = window.innerHeight;
+    /* --- Destellos Festivos al Mover el Puntero por Tarjetas y Botones --- */
+    let lastSparkle = 0;
+    const createSparkle = (e) => {
+      const now = Date.now();
+      if (now - lastSparkle < 70) return; // Limitar frecuencia de generación
+      lastSparkle = now;
 
-    window.addEventListener('resize', () => {
-      width = canvas.width = window.innerWidth;
-      height = canvas.height = window.innerHeight;
+      const sparkle = document.createElement('span');
+      sparkle.className = 'js-sparkle';
+      const icons = ['✨', '❄️', '✦', '✳️'];
+      sparkle.textContent = icons[Math.floor(Math.random() * icons.length)];
+      sparkle.style.left = `${e.clientX + (Math.random() * 20 - 10)}px`;
+      sparkle.style.top = `${e.clientY + (Math.random() * 20 - 10)}px`;
+      
+      document.body.appendChild(sparkle);
+      setTimeout(() => sparkle.remove(), 800);
+    };
+
+    document.querySelectorAll('.catalog-card, .btn, .brand').forEach(element => {
+      element.addEventListener('mousemove', createSparkle);
     });
 
-    const flakes = [];
-    const numFlakes = 35; // Cantidad ligera para mantener la calma visual
+    /* --- Animación de Nieve Navideña Optimizada con Capas y Destellos --- */
+    const canvas = document.getElementById('snow-canvas');
+    const ctx = canvas.getContext('2d', { alpha: true });
 
-    for (let i = 0; i < numFlakes; i++) {
-      flakes.push({
-        x: Math.random() * width,
-        y: Math.random() * height,
-        r: Math.random() * 2 + 1,
-        d: Math.random() * numFlakes,
-        opacity: Math.random() * 0.4 + 0.2
-      });
+    let width, height;
+    let flakes = [];
+    const numFlakes = 40;
+
+    function resizeCanvas() {
+      const dpr = window.devicePixelRatio || 1;
+      width = window.innerWidth;
+      height = window.innerHeight;
+      canvas.width = width * dpr;
+      canvas.height = height * dpr;
+      canvas.style.width = width + 'px';
+      canvas.style.height = height + 'px';
+      ctx.scale(dpr, dpr);
+    }
+
+    function initFlakes() {
+      flakes = [];
+      for (let i = 0; i < numFlakes; i++) {
+        flakes.push({
+          x: Math.random() * width,
+          y: Math.random() * height,
+          r: Math.random() * 2.4 + 0.6,
+          speed: Math.random() * 0.6 + 0.3,
+          swing: Math.random() * 0.015 + 0.005,
+          swingStep: Math.random() * Math.PI,
+          opacity: Math.random() * 0.45 + 0.25,
+          isSparkle: Math.random() > 0.75
+        });
+      }
     }
 
     function drawSnow() {
       ctx.clearRect(0, 0, width, height);
+
       for (let i = 0; i < numFlakes; i++) {
         const f = flakes[i];
+
+        f.swingStep += f.swing;
+        f.x += Math.sin(f.swingStep) * 0.35;
+        f.y += f.speed;
+
+        if (f.y > height + 10) {
+          f.y = -10;
+          f.x = Math.random() * width;
+        }
+        if (f.x > width + 10) f.x = -10;
+        if (f.x < -10) f.x = width + 10;
+
         ctx.beginPath();
-        ctx.fillStyle = `rgba(255, 255, 255, ${f.opacity})`;
+        if (f.isSparkle) {
+          const sparkleAlpha = f.opacity + Math.sin(f.swingStep * 3) * 0.2;
+          ctx.fillStyle = `rgba(255, 248, 220, ${Math.max(0.1, sparkleAlpha)})`;
+        } else {
+          ctx.fillStyle = `rgba(255, 255, 255, ${f.opacity})`;
+        }
         ctx.arc(f.x, f.y, f.r, 0, Math.PI * 2, true);
         ctx.fill();
       }
-      updateSnow();
+
       requestAnimationFrame(drawSnow);
     }
 
-    let angle = 0;
-    function updateSnow() {
-      angle += 0.008;
-      for (let i = 0; i < numFlakes; i++) {
-        const f = flakes[i];
-        f.y += Math.cos(angle + f.d) + 0.8 + f.r / 3;
-        f.x += Math.sin(angle) * 0.4;
+    window.addEventListener('load', () => {
+      resizeCanvas();
+      initFlakes();
+      requestAnimationFrame(drawSnow);
+    });
 
-        if (f.x > width + 5 || f.x < -5 || f.y > height) {
-          flakes[i] = {
-            x: Math.random() * width,
-            y: -10,
-            r: f.r,
-            d: f.d,
-            opacity: f.opacity
-          };
-        }
-      }
-    }
-
-    drawSnow();
+    let resizeTimeout;
+    window.addEventListener('resize', () => {
+      clearTimeout(resizeTimeout);
+      resizeTimeout = setTimeout(() => {
+        resizeCanvas();
+        initFlakes();
+      }, 100);
+    });
   </script>
 </body>
 </html>
